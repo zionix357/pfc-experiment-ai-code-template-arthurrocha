@@ -29,7 +29,7 @@
  */
 
 function isValid(s) {
-  // Implementar aqui
+  console.log("Início Tarefa 1 - GC");
   return false;
 }
 
