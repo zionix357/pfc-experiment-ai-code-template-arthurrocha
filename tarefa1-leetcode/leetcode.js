@@ -29,14 +29,74 @@
  */
 
 function isValid(s) {
-  console.log("Início Tarefa 1 - GC");
-  return false;
+  const openingMap = new Map([["(", 0], ["{", 1], ["[", 2]]);
+  const closingMap = new Map([[")", 0], ["}", 1], ["]", 2]]);
+
+  const length = s.length
+  const parentheses = []
+
+  if (length == 0) {
+    return true;
+  }
+
+  for (var i = 0; i < length; i++) {
+    const openingIndex = openingMap.get(s[i]);
+    const closingIndex = closingMap.get(s[i]);
+
+    if ((openingIndex === undefined) && (closingIndex === undefined)) { 
+      return false;
+    }
+    
+    if (openingIndex !== undefined) {
+      parentheses.push(openingIndex);
+    } else if (closingIndex !== undefined) {
+      if (parentheses.length === 0 || parentheses.at(-1) !== closingIndex) {
+        return false;
+      }
+      parentheses.pop();
+    } else {
+      return false
+    }
+  }
+
+  return parentheses.length === 0;
 }
 
 
 function findFirstError(s) {
-  // Implementar aqui
-  return { valid: false, error: null, position: 0, character: '' };
+  if (s.length == 0) {
+    return { valid: true, error: null, position: 0, character: '' };
+  }
+
+  const openingMap = new Map([["(", 0], ["{", 1], ["[", 2]]);
+  const closingMap = new Map([[")", 0], ["}", 1], ["]", 2]]);
+
+  const length = s.length
+  const parentheses = []
+
+  for (var i = 0; i < length; i++) {
+    const openingIndex = openingMap.get(s[i]);
+    const closingIndex = closingMap.get(s[i]);
+    
+    if (openingIndex !== undefined) {
+      parentheses.push(openingIndex);
+    } else if (closingIndex !== undefined) {
+      if (parentheses.length === 0) {
+        return { valid: false, error: "Parêntese fechado", position: i, character: s[i] };
+      }else if (parentheses.at(-1) !== closingIndex) {
+        return { valid: false, error: "não corresponde", position: i, character: s[i] };
+      }
+      parentheses.pop();
+    } else {
+      return { valid: false, error: "não corresponde", position: i, character: s[i] };
+    }
+  }
+
+  if (parentheses.length === 0) {
+    return { valid: true, error: null, position: 0, character: '' };
+  } else {
+    return { valid: false, error: "não foi fechado", position: parentheses.length-1, character: s.at(-1) };
+  }
 }
 
 module.exports = { isValid, findFirstError };
