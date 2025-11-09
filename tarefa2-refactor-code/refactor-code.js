@@ -13,6 +13,8 @@ class LegacyOrderProcessor {
     var unusedVar2 = 123;
     var unusedVar3 = true;
 
+    console.log("chore: inicio tarefa 2");
+
     if (orderData != null) {
       if (orderData.items != null) {
         if (orderData.items.length > 0) {
